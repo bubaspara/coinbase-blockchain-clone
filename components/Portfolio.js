@@ -7,34 +7,36 @@ import Coin from "./Coin";
 const Portfolio = () => {
   return (
     <Wrapper>
-      <PortfolioTable>
-        <TableItem>
-          <Title>Your Assets</Title>
-        </TableItem>
-        <Divider />
-        <Table>
+      <Content>
+        <PortfolioTable>
           <TableItem>
-            <TableRow>
-              <DivFlex3>Name</DivFlex3>
-              <DivFlex2>Balance</DivFlex2>
-              <DivFlex1>Price</DivFlex1>
-              <DivFlex1>Allocation</DivFlex1>
-              <DivFlex0>
-                <BsThreeDotsVertical />
-              </DivFlex0>
-            </TableRow>
+            <Title>Your Assets</Title>
           </TableItem>
           <Divider />
-          <div>
-            {coins.map((coin, idx) => (
-              <div key={idx}>
-                <Coin coin={coin} />
-                <Divider />
-              </div>
-            ))}
-          </div>
-        </Table>
-      </PortfolioTable>
+          <Table>
+            <TableItem>
+              <TableRow>
+                <DivFlex3>Name</DivFlex3>
+                <DivFlex2>Balance</DivFlex2>
+                <DivFlex1>Price</DivFlex1>
+                <DivFlex1>Allocation</DivFlex1>
+                <DivFlex0>
+                  <BsThreeDotsVertical />
+                </DivFlex0>
+              </TableRow>
+            </TableItem>
+            <Divider />
+            <div>
+              {coins.map((coin, idx) => (
+                <div key={idx}>
+                  <Coin coin={coin} />
+                  <Divider />
+                </div>
+              ))}
+            </div>
+          </Table>
+        </PortfolioTable>
+      </Content>
     </Wrapper>
   );
 };
@@ -48,8 +50,9 @@ const Wrapper = styled.div`
 `;
 
 const Content = styled.div`
-  margin-top: 1rem;
-  border: 1px solid #282b2f;
+  width: 100%;
+  max-width: 1000px;
+  padding: 2rem 1rem;
 `;
 
 const PortfolioTable = styled.div`
