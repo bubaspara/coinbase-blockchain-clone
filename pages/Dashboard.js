@@ -2,10 +2,12 @@ import React from "react";
 import styled from "styled-components";
 import Header from "../components/Header";
 import Main from "../components/Main";
+import Side from "../components/Side";
 
 const Dashboard = ({ address }) => {
   return (
     <Wrapper>
+      <Side />
       <MainContainer>
         <Header />
         <Main />
