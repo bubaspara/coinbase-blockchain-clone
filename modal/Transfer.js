@@ -3,7 +3,6 @@ import styled from "styled-components";
 import { FaWallet } from "react-icons/fa";
 import { client } from "../lib/sanity";
 import imageUrlBuilder from "@sanity/image-url";
-import CoinSelector from "./CoinSelector";
 
 const Transfer = ({
   selectedToken,
@@ -39,8 +38,8 @@ const Transfer = ({
   }, [selectedToken]);
 
   const sendCrypto = async (amount, recipient) => {
-    console.log("Sending Crypto!");
     if (activeThirdWebToken && amount && recipient) {
+      setAction("transferring");
       const tx = await activeThirdWebToken.transfer(
         recipient,
         amount.toString().concat("000000000000000000")
@@ -82,7 +81,7 @@ const Transfer = ({
         <Divider />
         <Row>
           <FieldName>Pay with</FieldName>
-          <CoinSelectList>
+          <CoinSelectList onClick={() => setAction("select")}>
             <Icon>
               <img src={imageUrl} alt={selectedToken.name} />
             </Icon>
@@ -227,6 +226,7 @@ const CoinName = styled.div`
 `;
 
 const Continue = styled.button`
+  border: none;
   color: white;
   width: 100%;
   background-color: #3773f5;
