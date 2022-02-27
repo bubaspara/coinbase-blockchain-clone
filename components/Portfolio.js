@@ -5,23 +5,29 @@ import { coins } from "../static/coins";
 import Coin from "./Coin";
 import BalanceChart from "./BalanceChart";
 
-const Portfolio = () => {
-  const [sanityTokens, setSanityTokens] = useState([]);
+const Portfolio = ({ sanityTokens, thirdWebTokens, walletAddress }) => {
+  const [walletBalance, setWalletBalance] = useState(0);
+
+  const tokenToUSD = {};
+  for (const token of sanityTokens) {
+    tokenToUSD[token.contractAddress] = Number(token.usdPrice);
+  }
+
   useEffect(() => {
-    const getCoins = async () => {
-      try {
-        const coins = await fetch(
-          "https://ethdq3bv.api.sanity.io/v2021-10-21/data/query/production?query=*%5B_type%3D%3D%22coins%22%5D%7B%0A%20%20name%2C%0A%20%20usdPrice%2C%0A%20%20contactAddress%2C%0A%20%20symbol%2C%0A%20%20logo%2C%0A%7D"
-        );
-        const tempSanityTokens = await coins.json();
-        setSanityTokens(tempSanityTokens.result);
-        console.log("Results", tempSanityTokens.result);
-      } catch (err) {
-        console.log(err);
-      }
-      return getCoins();
+    //A bit complicated
+    const calculateTotalBalance = async () => {
+      const totalBalance = await Promise.all(
+        thirdWebTokens.map(async (token) => {
+          const balance = await token.balanceOf(walletAddress);
+          return Number(balance.displayValue) * tokenToUSD[token.address];
+        })
+      );
+      setWalletBalance(totalBalance.reduce((a, b) => a + b, 0));
     };
-  }, []);
+
+    return calculateTotalBalance();
+  }, [thirdWebTokens, sanityTokens]);
+
   return (
     <Wrapper>
       <Content>
@@ -31,8 +37,7 @@ const Portfolio = () => {
               <BalanceTitle>Portfolio Balance</BalanceTitle>
               <BalanceValue>
                 {"$"}
-                {/* {walletBalance.toLocaleString()} */}
-                46.000
+                {walletBalance.toLocaleString()}
               </BalanceValue>
             </Balance>
           </div>
