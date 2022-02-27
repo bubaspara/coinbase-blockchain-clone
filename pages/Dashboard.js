@@ -36,8 +36,6 @@ const Dashboard = ({ walletAddress }) => {
     return getSanityAndThirdWebTokens();
   }, []);
 
-  console.log("Dashboard 3rd web tokens", thirdWebTokens);
-
   return (
     <Wrapper>
       <Side />
