@@ -2,6 +2,8 @@ import { useState } from "react";
 import styled from "styled-components";
 import CoinSelector from "./CoinSelector";
 import Transfer from "./Transfer";
+import { TailSpin } from "react-loader-spinner";
+import Receive from "./Receive";
 
 const TransferModal = ({ sanityTokens, thirdWebTokens, walletAddress }) => {
   const [action, setAction] = useState("send");
@@ -19,7 +21,13 @@ const TransferModal = ({ sanityTokens, thirdWebTokens, walletAddress }) => {
           />
         );
       case "receive":
-        return <h2>Receive</h2>;
+        return (
+          <Receive
+            setAction={setAction}
+            selectedToken={selectedToken}
+            walletAddress={walletAddress}
+          />
+        );
       case "select":
         return (
           <CoinSelector
@@ -32,9 +40,45 @@ const TransferModal = ({ sanityTokens, thirdWebTokens, walletAddress }) => {
           />
         );
       case "transferring":
-        return "";
+        return (
+          <div
+            style={{
+              width: "100%",
+              height: "80%",
+              fontSize: "1.5rem",
+              display: "flex",
+              justifyContent: "center",
+              flexDirection: "column",
+              alignItems: "center",
+            }}
+          >
+            <h2>Transferring...</h2>
+            <TailSpin
+              height="100"
+              width="100"
+              color="grey"
+              ariaLabel="loading"
+            />
+          </div>
+        );
       case "transferred":
-        return "";
+        return (
+          <div
+            style={{
+              width: "100%",
+              height: "80%",
+              fontSize: "2rem",
+              fontWeight: "600",
+              color: "#27ad75",
+              display: "flex",
+              justifyContent: "center",
+              flexDirection: "column",
+              alignItems: "center",
+            }}
+          >
+            Transfer Complete
+          </div>
+        );
       default:
         <h2>Send</h2>;
     }
